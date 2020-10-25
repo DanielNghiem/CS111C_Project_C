@@ -1,6 +1,7 @@
 import java.util.Arrays;
 
-public class LinkedFrontBackLimitedSizeList<T> implements FrontBackLimitedSizeListInterface<T> {
+public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
+        implements FrontBackLimitedSizeListInterface<T>, Comparable<LinkedFrontBackLimitedSizeList<T>> {
 
     private Node head, tail;
     private int maxCapacity;
@@ -77,17 +78,8 @@ public class LinkedFrontBackLimitedSizeList<T> implements FrontBackLimitedSizeLi
 
     @Override
     public String toString() {
-        T[] arrayList = (T[]) new Object[size()]; // just to make sure: is this considered a O(n)?
-        //if (!isEmpty()) {
-        Node current = head;
-        int i = 0;
-        while (current != null) {
-            arrayList[i] = current.data;
-            current = current.next;
-            i++;
-        }
-        //     }
-        return Arrays.toString(arrayList);
+        // TODO
+        return null;
     }
 
     @Override
@@ -127,6 +119,11 @@ public class LinkedFrontBackLimitedSizeList<T> implements FrontBackLimitedSizeLi
     public boolean isFull() {
 
         return false;
+    }
+
+    @Override
+    public int compareTo(LinkedFrontBackLimitedSizeList<T> tLinkedFrontBackLimitedSizeList) {
+        return 0;
     }
 
 
