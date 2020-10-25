@@ -5,14 +5,10 @@ public class LinkedFrontBackLimitedSizeList<T> implements FrontBackLimitedSizeLi
     private Node head, tail;
     private static final int MAX_CAPACITY = 20;
 
-
     public LinkedFrontBackLimitedSizeList(int desiredCapacity) {
-        //desiredCapacity = MAX_CAPACITY;
-        T[] tempArray = (T[]) new Object[desiredCapacity];
+
         if (desiredCapacity <= MAX_CAPACITY) {
-            for (int i = 0; i < desiredCapacity; i++){
-                tempArray[i] = null;
-            }
+
         } else
             throw new IllegalStateException(
                     "Attempt to create a list that exceeds allowed maximum capacity");
