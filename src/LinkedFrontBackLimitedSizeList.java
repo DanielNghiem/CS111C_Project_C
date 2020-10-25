@@ -3,15 +3,15 @@ import java.util.Arrays;
 public class LinkedFrontBackLimitedSizeList<T> implements FrontBackLimitedSizeListInterface<T> {
 
     private Node head, tail;
-    private static final int MAX_CAPACITY = 20;
+    private int maxCapacity;
 
     public LinkedFrontBackLimitedSizeList(int desiredCapacity) {
-
-        if (desiredCapacity <= MAX_CAPACITY) {
-
-        } else
-            throw new IllegalStateException(
-                    "Attempt to create a list that exceeds allowed maximum capacity");
+        if (desiredCapacity >= 0) {
+            maxCapacity = desiredCapacity;
+        } else {
+            throw new IllegalArgumentException(
+                    "Attempt to create a list with negative capacity");
+        }
     }
 
     @Override
