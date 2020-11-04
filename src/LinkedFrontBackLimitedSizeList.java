@@ -78,8 +78,17 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
 
     @Override
     public String toString() {
-        // TODO
-        return null;
+         T[] arrayList = (T[]) new Object[size()]; // just to make sure: is this considered a O(n)?
+        //if (!isEmpty()) {
+        Node current = head;
+        int i = 0;
+        while (current != null) {
+            arrayList[i] = current.data;
+            current = current.next;
+            i++;
+        }
+        //     }
+        return Arrays.toString(arrayList);
     }
 
     @Override
