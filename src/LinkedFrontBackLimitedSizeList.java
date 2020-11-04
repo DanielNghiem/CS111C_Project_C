@@ -1,21 +1,18 @@
 import java.util.Arrays;
 
-public class LinkedFrontBackLimitedSizeList<T> implements FrontBackLimitedSizeListInterface<T> {
+public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
+        implements FrontBackLimitedSizeListInterface<T>, Comparable<LinkedFrontBackLimitedSizeList<T>> {
 
     private Node head, tail;
-    private static final int MAX_CAPACITY = 20;
-
+    private int maxCapacity;
 
     public LinkedFrontBackLimitedSizeList(int desiredCapacity) {
-        //desiredCapacity = MAX_CAPACITY;
-        T[] tempArray = (T[]) new Object[desiredCapacity];
-        if (desiredCapacity <= MAX_CAPACITY) {
-            for (int i = 0; i < desiredCapacity; i++){
-                tempArray[i] = null;
-            }
-        } else
-            throw new IllegalStateException(
-                    "Attempt to create a list that exceeds allowed maximum capacity");
+        if (desiredCapacity >= 0) {
+            maxCapacity = desiredCapacity;
+        } else {
+            throw new IllegalArgumentException(
+                    "Attempt to create a list with negative capacity");
+        }
     }
 
     @Override
@@ -81,17 +78,8 @@ public class LinkedFrontBackLimitedSizeList<T> implements FrontBackLimitedSizeLi
 
     @Override
     public String toString() {
-        T[] arrayList = (T[]) new Object[size()]; // just to make sure: is this considered a O(n)?
-        //if (!isEmpty()) {
-        Node current = head;
-        int i = 0;
-        while (current != null) {
-            arrayList[i] = current.data;
-            current = current.next;
-            i++;
-        }
-        //     }
-        return Arrays.toString(arrayList);
+        // TODO
+        return null;
     }
 
     @Override
@@ -131,6 +119,11 @@ public class LinkedFrontBackLimitedSizeList<T> implements FrontBackLimitedSizeLi
     public boolean isFull() {
 
         return false;
+    }
+
+    @Override
+    public int compareTo(LinkedFrontBackLimitedSizeList<T> tLinkedFrontBackLimitedSizeList) {
+        return 0;
     }
 
 
