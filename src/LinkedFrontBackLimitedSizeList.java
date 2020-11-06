@@ -19,9 +19,9 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
     public boolean addFront(T newEntry) {
         boolean result = false;
         if (!isFull()) {
-            if (head == null) {
+            if (isEmpty()) {
                 head = new Node(newEntry);
-                head = tail;
+                tail = head;
             } else {
                 Node newNode = new Node(newEntry);
                 newNode.next = head;
@@ -36,12 +36,13 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
     @Override
     public boolean addBack(T newEntry) {
         boolean result = false;
-        if (!isEmpty()) {
-            Node current = head;
-            while (current != null) {
-                current = current.next;
+        if (!isFull()) {
+            if (isEmpty()) {
+                addFront(newEntry);
+            } else {  // assign the new tail
+                tail.next = new Node(newEntry);
+                tail = tail.next;
             }
-            current.next = new Node(newEntry);
             result = true;
         }
         return result;
@@ -50,7 +51,7 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
     @Override
     public T removeFront() {
         T removed = null;
-        if (head != null) {
+        if (!isEmpty()) {
             removed = head.data;
             head = head.next;
         }
@@ -59,10 +60,23 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
 
     @Override
     public T removeBack() {
-        if (head != null) {
+        T removed = null;
+        if (!isEmpty()) {
+            removed = tail.data;
 
+            if (size() == 1) {
+                clear();
+            } else { // size() > 1
+                Node current = head;
+
+                while (current.next.next != null) {  // traverse to second to last node
+                    current = current.next;
+                }
+                current.next = null;
+                tail = current;
+            }
         }
-        return null;
+        return removed;
     }
 
     @Override
@@ -73,12 +87,21 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
 
     @Override
     public T getEntry(int givenPosition) {
-        return null;
+        T result = null;
+
+        if (givenPosition >= 0 && givenPosition < size()) {
+            Node current = head;
+            for (int i = 0; i < givenPosition; i++) {
+                current = current.next;
+            }
+            result = current.data;
+        }
+        return result;
     }
 
     @Override
     public String toString() {
-         T[] arrayList = (T[]) new Object[size()]; // just to make sure: is this considered a O(n)?
+        T[] arrayList = (T[]) new Comparable[size()]; // just to make sure: is this considered a O(n)?
         //if (!isEmpty()) {
         Node current = head;
         int i = 0;
@@ -93,12 +116,56 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
 
     @Override
     public int indexOf(T anEntry) {
-        return 0;
+        int counter = -1;
+        boolean isFound = false;
+        Node current = head;
+
+        while (current != null && !isFound) {
+            if (current.data.equals(anEntry)) {
+                isFound = true;
+            }
+            current = current.next;
+            counter++;
+        }
+        if (isFound) {
+            return counter;
+        } else {
+            return -1;
+        }
     }
 
     @Override
-    public int lastIndexOf(T anEntry) {
-        return 0;
+        public int lastIndexOf(T anEntry) {
+            int lastIndex = -1;
+            Node current = head;
+
+            for (int i = 0; i < size(); i++) {
+                if (current.data.equals(anEntry)) {
+                    lastIndex = i;
+                }
+                current = current.next;
+            }
+            return lastIndex;
+    }
+
+    /* Finds the firstIndex of an entry starting at start */
+    private int firstIndexOf(T anEntry, Node start) {
+        int counter = -1;
+        boolean isFound = false;
+        Node current = start;
+
+        while (current != null && !isFound) {
+            if (current.data.equals(anEntry)) {
+                isFound = true;
+            }
+            current = current.next;
+            counter++;
+        }
+        if (isFound) {
+            return counter;
+        } else {
+            return -1;
+        }
     }
 
     @Override
@@ -109,6 +176,7 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
     @Override
     public int size() {
         int count = 0;
+
         if (!isEmpty()) {
             Node current = head;
             while (current != null) {
@@ -121,12 +189,16 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
 
     @Override
     public boolean isEmpty() {
-        return (head == null && tail == null);
+        return (head == null);
     }
 
     @Override
     public boolean isFull() {
-
+        if (size() == maxCapacity) {
+            return true;
+        } else if (size() > maxCapacity) {
+            System.out.println("The size is greater than the max capacity!");
+        }
         return false;
     }
 
