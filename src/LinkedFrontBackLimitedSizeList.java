@@ -101,8 +101,8 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
 
     @Override
     public String toString() {
-        T[] arrayList = (T[]) new Comparable[size()]; // just to make sure: is this considered a O(n)?
-        //if (!isEmpty()) {
+        T[] arrayList = (T[]) new Comparable[size()];
+
         Node current = head;
         int i = 0;
         while (current != null) {
@@ -110,9 +110,15 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
             current = current.next;
             i++;
         }
-        //     }
-        return Arrays.toString(arrayList);
+
+        if (isEmpty()) {
+            return "[]";
+        } else {
+            return Arrays.toString(arrayList) + "\thead=" + head.data.toString()
+                    + " tail=" + tail.data.toString();
+        }
     }
+
 
     @Override
     public int indexOf(T anEntry) {
@@ -148,29 +154,9 @@ public class LinkedFrontBackLimitedSizeList<T extends Comparable<? super T>>
             return lastIndex;
     }
 
-    /* Finds the firstIndex of an entry starting at start */
-    private int firstIndexOf(T anEntry, Node start) {
-        int counter = -1;
-        boolean isFound = false;
-        Node current = start;
-
-        while (current != null && !isFound) {
-            if (current.data.equals(anEntry)) {
-                isFound = true;
-            }
-            current = current.next;
-            counter++;
-        }
-        if (isFound) {
-            return counter;
-        } else {
-            return -1;
-        }
-    }
-
     @Override
     public boolean contains(T anEntry) {
-        return false;
+        return (indexOf(anEntry) != -1);
     }
 
     @Override
